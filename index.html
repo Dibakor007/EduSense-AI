@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduSense AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: "#4f46e5",
+              light: "#6D28D9",
+              dark: "#4338CA",
+            },
+            secondary: {
+              DEFAULT: "#0891B2",
+              light: "#06b6d4",
+              dark: "#0e7490",
+            },
+            success: {
+              DEFAULT: "#059669",
+              light: "#10B981",
+              dark: "#047857",
+            },
+            warning: {
+              DEFAULT: "#D97706",
+              light: "#F59E0B",
+              dark: "#B45309",
+            },
+            danger: {
+              DEFAULT: "#DC2626",
+              light: "#EF4444",
+              dark: "#B91C1C",
+            },
+            neutral: {
+              light: "#94a3b8",
+              DEFAULT: "#64748B",
+              medium: "#475569",
+              dark: "#334155",
+              extradark: "#1e293b",
+            },
+            background: "#f8fafc", // Main page background
+            surface: "#ffffff", // Card backgrounds
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Poppins", "sans-serif"],
+          },
+          boxShadow: {
+            sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+            DEFAULT:
+              "0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
+            md: "0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07)",
+            lg: "0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08)",
+            xl: "0 25px 50px -12px rgb(0 0 0 / 0.15)",
+          },
+          keyframes: {
+            fadeInUp: {
+              "0%": { opacity: "0", transform: "translateY(10px)" },
+              "100%": { opacity: "1", transform: "translateY(0)" },
+            },
+            fadeIn: {
+              "0%": { opacity: "0" },
+              "100%": { opacity: "1" },
+            },
+            aurora: {
+              "0%": { "background-position": "0% 50%" },
+              "50%": { "background-position": "100% 50%" },
+              "100%": { "background-position": "0% 50%" },
+            },
+          },
+          animation: {
+            "fade-in-up": "fadeInUp 0.5s ease-out forwards",
+            "fade-in": "fadeIn 0.3s ease-out forwards",
+            "aurora-bg": "aurora 20s ease infinite",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .bg-aurora {
+      background: linear-gradient(-45deg, #f0f4ff, #e6e9ff, #d1e8ff, #d1fff8);
+      background-size: 400% 400%;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(148, 163, 184, 0.5);
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(71, 85, 105, 0.7);
+    }
+
+    .dark ::-webkit-scrollbar-thumb {
+      background-color: rgba(71, 85, 105, 0.5);
+    }
+
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(100, 116, 139, 0.7);
+    }
+
+    /* AI Tutor Chat - Dark Mode Optimized */
+    .dark .chat-message-content p {
+      color: #e2e8f0;
+    }
+
+    .dark .chat-message-content pre {
+      background-color: #0f1419;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dark .chat-message-content .inline-code {
+      background-color: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+    }
+
+    .dark .chat-message-content blockquote {
+      border-left-color: #475569;
+      color: #cbd5e1;
+    }
+
+    .dark .chat-message-content hr {
+      border-top-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Styles for AI Tutor Formatted Content */
+    .chat-message-content p {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .chat-message-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .chat-message-content pre {
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.875rem;
+      margin: 1rem 0;
+    }
+
+    .chat-message-content code {
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    .chat-message-content .inline-code {
+      background-color: rgba(148, 163, 184, 0.15);
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.85em;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .chat-message-content ul,
+    .chat-message-content ol {
+      margin: 0.75rem 0;
+      padding-left: 1.75rem;
+    }
+
+    .chat-message-content ul {
+      list-style-type: disc;
+    }
+
+    .chat-message-content ol {
+      list-style-type: decimal;
+    }
+
+    .chat-message-content li {
+      margin-bottom: 0.35rem;
+      line-height: 1.6;
+    }
+
+    .chat-message-content h1,
+    .chat-message-content h2,
+    .chat-message-content h3,
+    .chat-message-content h4 {
+      font-weight: 600;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .chat-message-content h1 {
+      font-size: 1.25rem;
+    }
+
+    .chat-message-content h2 {
+      font-size: 1.1rem;
+    }
+
+    .chat-message-content h3 {
+      font-size: 1rem;
+    }
+
+    .chat-message-content h4 {
+      font-size: 0.9rem;
+    }
+
+    .chat-message-content blockquote {
+      border-left: 4px solid #cbd5e1;
+      /* neutral-light */
+      padding-left: 1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: #475569;
+      /* neutral-medium */
+    }
+
+    .chat-message-content hr {
+      border-top: 1px solid rgba(148, 163, 184, 0.3);
+      margin: 1.5rem 0;
+    }
+  </style>
+  <script type="importmap">
+      {
+        "imports": {
+          "react/": "https://aistudiocdn.com/react@^19.2.0/",
+          "react": "https://aistudiocdn.com/react@^19.2.0",
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+          "recharts": "https://aistudiocdn.com/recharts@^2.12.7",
+          "recharts/": "https://aistudiocdn.com/recharts@^2.12.7/",
+          "d3": "https://aistudiocdn.com/d3@^7.9.0",
+          "d3-force": "https://aistudiocdn.com/d3-force@^3.0.0",
+          "d3-scale-chromatic": "https://aistudiocdn.com/d3-scale-chromatic@^3.1.0",
+          "d3-zoom": "https://aistudiocdn.com/d3-zoom@^3.0.0",
+          "d3-color": "https://aistudiocdn.com/d3-color@^3.1.0",
+          "d3-selection": "https://aistudiocdn.com/d3-selection@^3.0.0",
+          "d3-scale": "https://aistudiocdn.com/d3-scale@^4.0.2",
+          "d3-drag": "https://aistudiocdn.com/d3-drag@^3.0.0",
+          "d3-transition": "https://aistudiocdn.com/d3-transition@^3.0.1"
+        }
+      }
+    </script>
+  <link rel="stylesheet" href="/index.css" />
+</head>
+
+<body class="bg-background font-sans text-neutral-dark antialiased">
+  <div id="root"></div>
+  <div class="fixed inset-0 -z-10 bg-aurora animate-aurora-bg"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
