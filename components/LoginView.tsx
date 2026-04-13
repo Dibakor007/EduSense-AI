@@ -232,7 +232,7 @@ const RoleSelect: React.FC<{ onSelectRole: (role: 'student' | 'teacher') => void
 
 const StudentLogin: React.FC<{ onLogin: (creds: any) => void, onSwitchToSignup: () => void, onBack: () => void }> = ({ onLogin, onSwitchToSignup, onBack }) => {
     const [email, setEmail] = useState('rahul.sharma@example.com');
-    const [password, setPassword] = useState('password');
+    const [password, setPassword] = useState('password123');
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
