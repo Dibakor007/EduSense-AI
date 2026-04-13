@@ -113,25 +113,19 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
       if (score >= 80) {
         setCurrentMessage({
           type: "celebration",
-          message: `Wow, ${user.name}! Your last score of ${score.toFixed(
-            0
-          )}% was outstanding! Your emotional state shows great confidence. Keep this momentum going! 🌟`,
+          message: `${score.toFixed(0)}% — Outstanding! 🌟`,
           icon: <SmileIcon className="w-6 h-6" />,
         });
       } else if (score >= 60) {
         setCurrentMessage({
           type: "motivation",
-          message: `Hey ${user.name}, you scored ${score.toFixed(
-            0
-          )}% on your last assessment. That's solid progress! Let's work on those challenging areas together. 💪`,
+          message: `${score.toFixed(0)}% — Solid progress! 💪`,
           icon: <HeartIcon className="w-6 h-6" />,
         });
       } else {
         setCurrentMessage({
           type: "guidance",
-          message: `${user.name}, your last score was ${score.toFixed(
-            0
-          )}%. I can see you're facing some challenges. Let's break things down step by step and build your confidence back up. 🧩`,
+          message: `${score.toFixed(0)}% — Let's improve together 🧩`,
           icon: <BrainCircuitIcon className="w-6 h-6" />,
         });
         if (lastResult.timeTaken > 60) {
@@ -329,35 +323,35 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
     type: "motivation" | "break" | "celebration" | "guidance"
   ) => {
     const motivationMessages = [
-      `Hey ${user.name}, you're doing great! Every mistake is a step towards mastery. 💪`,
-      `${user.name}, remember: learning is a journey, not a race. Take your time! 🌟`,
-      `Don't give up, ${user.name}! The breakthrough is often just one more try away. 🚀`,
-      `${user.name}, you've overcome challenges before, and you'll overcome this one too! 🎯`,
-      `Progress over perfection, ${user.name}! You're learning and growing. 🌱`,
+      `Keep going, ${user.name}! 💪`,
+      `You've got this! 🌟`,
+      `Almost there! 🚀`,
+      `Stay strong! 🎯`,
+      `Progress! 🌱`,
     ];
 
     const breakMessages = [
-      `${user.name}, you've been working hard! How about a 5-minute break? Your brain will thank you! ☕`,
-      `Time for a quick breather, ${user.name}! Step away, stretch, and come back refreshed. 🧘`,
-      `${user.name}, taking breaks actually helps you learn better. Rest for a bit! 🌸`,
-      `You've earned a break, ${user.name}! Go grab some water and reset. 💧`,
-      `${user.name}, even champions need rest. Take 5 minutes to recharge! ⚡`,
+      `Break time? ☕`,
+      `Stretch & reset 🧘`,
+      `Rest helps! 🌸`,
+      `Hydrate! 💧`,
+      `Recharge ⚡`,
     ];
 
     const celebrationMessages = [
-      `Amazing work, ${user.name}! You're on fire! 🔥`,
-      `Excellent progress, ${user.name}! Keep up this momentum! 🎉`,
-      `You're crushing it, ${user.name}! Absolutely brilliant! ⭐`,
-      `${user.name}, that's what I call mastery! Fantastic! 🏆`,
-      `Wow, ${user.name}! You're making this look easy! 💯`,
+      `On fire! 🔥`,
+      `Great job! 🎉`,
+      `Brilliant! ⭐`,
+      `Nailed it! 🏆`,
+      `Easy! 💯`,
     ];
 
     const guidanceMessages = [
-      `${user.name}, try breaking down the problem into smaller steps. You've got this! 🧩`,
-      `When stuck, ${user.name}, try explaining the concept out loud. It helps! 💡`,
-      `${user.name}, remember to use the hints available. They're there to help you learn! 📚`,
-      `Try a different approach, ${user.name}. Sometimes a fresh perspective works wonders! 🔄`,
-      `${user.name}, reviewing the basics might help clarify this concept. No rush! 📖`,
+      `Break it down 🧩`,
+      `Try explaining it 💡`,
+      `Use hints 📚`,
+      `New approach? 🔄`,
+      `Review basics 📖`,
     ];
 
     let messages: string[];
@@ -423,7 +417,7 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
     setShowBreakSuggestion(false);
     setCurrentMessage({
       type: "break",
-      message: `Great decision, ${user.name}! See you in a few minutes. 😊`,
+      message: `See you soon! 😊`,
       icon: <HeartIcon className="w-6 h-6" />,
     });
   };
@@ -466,16 +460,16 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
     const actions: string[] = [];
 
     if (emotionalState.frustrationLevel > 60) {
-      actions.push("Try an easier variant to rebuild confidence");
+      actions.push("Try easier content");
     }
     if (emotionalState.stressLevel > 60 || totalTimeSpent / 60 > MAX_SESSION_MINUTES_BEFORE_BREAK) {
-      actions.push("Take a 5-minute reset break with hydration");
+      actions.push("Take a break");
     }
     if (emotionalState.engagementLevel < 50) {
-      actions.push("Switch to a hands-on example or mini-quiz");
+      actions.push("Try a mini-quiz");
     }
     if (actions.length === 0) {
-      actions.push("Stay in current flow and push one level harder");
+      actions.push("Push harder");
     }
 
     return actions;
@@ -492,8 +486,8 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
               <BrainCircuitIcon className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold font-display">Emotion-Aware Learning</h1>
-              <p className="text-sm text-white/80">Adaptive support that responds to mood, momentum, and cognitive load.</p>
+              <h1 className="text-2xl font-bold font-display">Emotion-Aware</h1>
+              <p className="text-xs text-white/70">Adapts to your mood & focus</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -541,10 +535,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
             </div>
             <p className="text-xs text-neutral-medium mt-1">
               {emotionalState.frustrationLevel > 70
-                ? "High - Consider taking a break"
+                ? "Take a break"
                 : emotionalState.frustrationLevel > 40
-                ? "Moderate - You're doing fine"
-                : "Low - Great focus!"}
+                ? "Okay"
+                : "Great"}
             </p>
           </div>
 
@@ -567,10 +561,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
             </div>
             <p className="text-xs text-neutral-medium mt-1">
               {emotionalState.stressLevel > 70
-                ? "High - Time for a break"
+                ? "Rest needed"
                 : emotionalState.stressLevel > 40
-                ? "Moderate - Stay calm"
-                : "Low - Relaxed learning!"}
+                ? "Manageable"
+                : "Calm"}
             </p>
           </div>
 
@@ -593,10 +587,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
             </div>
             <p className="text-xs text-neutral-medium mt-1">
               {emotionalState.engagementLevel > 70
-                ? "High - Excellent focus!"
+                ? "Focused"
                 : emotionalState.engagementLevel > 40
-                ? "Moderate - Stay engaged"
-                : "Low - Need motivation?"}
+                ? "Fair"
+                : "Low"}
             </p>
           </div>
 
@@ -619,10 +613,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
             </div>
             <p className="text-xs text-neutral-medium mt-1">
               {emotionalState.confidenceLevel > 70
-                ? "High - You've got this!"
+                ? "Strong"
                 : emotionalState.confidenceLevel > 40
-                ? "Moderate - Building up"
-                : "Low - Take it step by step"}
+                ? "Building"
+                : "Needs boost"}
             </p>
           </div>
         </div>
@@ -640,10 +634,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
       {/* Last Result Analysis */}
       {lastResult && (
         <Card className="border-l-4 border-primary">
-          <div className="flex items-center gap-3 mb-6">
-            <BrainCircuitIcon className="w-7 h-7 text-primary" />
-            <h2 className="text-2xl font-bold font-display text-neutral-extradark">
-              Last Assessment Analysis
+          <div className="flex items-center gap-3 mb-4">
+            <BrainCircuitIcon className="w-6 h-6 text-primary" />
+            <h2 className="text-xl font-bold font-display text-neutral-extradark">
+              Last Assessment
             </h2>
           </div>
 
@@ -682,55 +676,39 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
             </div>
           </div>
 
-          <div className="bg-neutral-light/30 rounded-lg p-4">
-            <h4 className="font-bold text-neutral-extradark mb-3">
-              Emotional Impact Analysis
+          <div className="bg-neutral-light/30 rounded-lg p-3">
+            <h4 className="font-semibold text-neutral-extradark mb-2 text-sm">
+              Emotional Impact
             </h4>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1 text-xs">
               {lastResult.percentage >= 80 ? (
-                <p className="text-success-dark flex items-start gap-2">
-                  <span className="text-lg">🎉</span>
-                  <span>
-                    Excellent performance! Your high score indicates strong
-                    confidence and low frustration levels. Keep up the great
-                    work!
-                  </span>
+                <p className="text-success-dark flex items-center gap-2">
+                  <span>🎉</span>
+                  <span>Great! High confidence, low frustration.</span>
                 </p>
               ) : lastResult.percentage >= 60 ? (
-                <p className="text-warning-dark flex items-start gap-2">
-                  <span className="text-lg">💪</span>
-                  <span>
-                    Good effort! Some challenges encountered may have increased
-                    frustration slightly. Focus on the areas that need
-                    improvement.
-                  </span>
+                <p className="text-warning-dark flex items-center gap-2">
+                  <span>💪</span>
+                  <span>Good effort. Focus on weak areas.</span>
                 </p>
               ) : (
-                <p className="text-danger-dark flex items-start gap-2">
-                  <span className="text-lg">🤔</span>
-                  <span>
-                    This assessment was challenging. Higher frustration and
-                    stress levels detected. Consider reviewing fundamentals and
-                    taking regular breaks while studying.
-                  </span>
+                <p className="text-danger-dark flex items-center gap-2">
+                  <span>🤔</span>
+                  <span>Challenging. Review basics & take breaks.</span>
                 </p>
               )}
 
               {lastResult.timeTaken > 60 && (
-                <p className="text-neutral-dark flex items-start gap-2">
-                  <span className="text-lg">⏱️</span>
-                  <span>
-                    Time taken: {lastResult.timeTaken} minutes. Extended
-                    duration may indicate increased cognitive load. Try
-                    practicing with shorter, focused sessions.
-                  </span>
+                <p className="text-neutral-dark flex items-center gap-2">
+                  <span>⏱️</span>
+                  <span>{lastResult.timeTaken}m — try shorter sessions</span>
                 </p>
               )}
 
               {Object.keys(lastResult.skillBreakdown).length > 0 && (
-                <div className="mt-4">
-                  <p className="font-semibold text-neutral-extradark mb-2">
-                    Skill Performance:
+                <div className="mt-3">
+                  <p className="font-semibold text-neutral-extradark mb-1 text-xs">
+                    Skills
                   </p>
                   <div className="space-y-2">
                     {Object.entries(lastResult.skillBreakdown)
@@ -824,42 +802,30 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
 
       {/* Adaptive Difficulty Recommendation */}
       <Card>
-        <h3 className="text-xl font-bold font-display text-neutral-extradark mb-4">
-          Adaptive Difficulty Recommendation
-        </h3>
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6 p-4 bg-primary/5 rounded-lg">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-primary/15 rounded-xl">
-              <TrendingUpIcon className="w-8 h-8 text-primary" />
+            <div className="p-2 bg-primary/15 rounded-lg">
+              <TrendingUpIcon className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-neutral-medium">Based on your current state</p>
-              <p className="text-2xl font-bold text-primary mt-1">
-                {suggestedDifficulty} Difficulty
+              <p className="text-xs text-neutral-medium">Recommended</p>
+              <p className="text-xl font-bold text-primary">
+                {suggestedDifficulty}
               </p>
             </div>
           </div>
-          <div className="flex-1 grid grid-cols-2 gap-3 text-sm text-neutral-medium">
-            <div className="rounded-lg bg-white border border-neutral-light p-3">
-              <p className="font-semibold text-neutral-extradark">Frustration</p>
-              <p>{emotionalState.frustrationLevel.toFixed(0)}% · lower = harder content</p>
-            </div>
-            <div className="rounded-lg bg-white border border-neutral-light p-3">
-              <p className="font-semibold text-neutral-extradark">Confidence</p>
-              <p>{emotionalState.confidenceLevel.toFixed(0)}% · higher = unlocks challenges</p>
-            </div>
+          <div className="flex gap-4 text-xs text-neutral-medium">
+            <span>Frust. {emotionalState.frustrationLevel.toFixed(0)}%</span>
+            <span>Conf. {emotionalState.confidenceLevel.toFixed(0)}%</span>
           </div>
-          <Button className="whitespace-nowrap">Apply Recommendation</Button>
+          <Button size="sm">Apply</Button>
         </div>
-        <p className="text-sm text-neutral-medium mt-3">
-          We balance challenge and comfort by blending frustration, stress, confidence, and engagement to keep you in flow.
-        </p>
       </Card>
 
       {/* Learning Session Stats */}
       <Card>
-        <h3 className="text-xl font-bold font-display text-neutral-extradark mb-4">
-          Session Statistics
+        <h3 className="text-lg font-bold font-display text-neutral-extradark mb-3">
+          Session Stats
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-neutral-light/50 rounded-lg">
@@ -891,14 +857,10 @@ const EmotionAwareLearning: React.FC<EmotionAwareLearningProps> = ({
 
       {/* Demo Controls (for testing) */}
       <Card>
-        <h3 className="text-xl font-bold font-display text-neutral-extradark mb-4">
-          Simulate Activities (Demo)
+        <h3 className="text-lg font-bold font-display text-neutral-extradark mb-3">
+          Demo
         </h3>
-        <p className="text-sm text-neutral-medium mb-4">
-          Use these buttons to simulate learning activities and see how the
-          system responds:
-        </p>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           <Button
             onClick={() => simulateActivity("question_answered", true)}
             variant="outline"
