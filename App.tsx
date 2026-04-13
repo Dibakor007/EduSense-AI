@@ -479,6 +479,21 @@ const App: React.FC = () => {
     handleNavigate("assessmentDetail");
   };
 
+  // Handler to start an existing assessment (from detail view or classroom view)
+  const handleStartAssessmentFromDetail = (assessment: Assessment, isPractice: boolean = false) => {
+    // Clear previous results
+    setResult(null);
+    setCompletedAssessment(null);
+    setGeneratedQuestions(null);
+
+    // Set the active assessment and mode
+    setActiveAssessment(assessment);
+    setIsPracticeMode(isPractice);
+
+    // Navigate to the assessment view
+    handleNavigate("assessment");
+  };
+
   const applyXpAndLevelUp = (currentUser: User, xpGained: number): User => {
     let currentXp = currentUser.xp ?? 0;
     let currentLevel = currentUser.level ?? 1;
@@ -538,7 +553,7 @@ const App: React.FC = () => {
           submittedAt: new Date().toISOString(),
         };
         setSubmissions((prev) => [...prev, newSubmission]);
-        
+
         // Add to unified data service for real-time updates
         unifiedDataService.addSubmission(newSubmission);
 
@@ -790,9 +805,9 @@ const App: React.FC = () => {
       prev.map((s) =>
         s.id === studentId
           ? {
-              ...s,
-              classIds: (s.classIds || []).filter((id) => id !== classId),
-            }
+            ...s,
+            classIds: (s.classIds || []).filter((id) => id !== classId),
+          }
           : s
       )
     );
@@ -935,17 +950,16 @@ const App: React.FC = () => {
         });
       });
       setAllNotifications((prev) => [...prev, ...newStudentNotifications]);
-      
+
       // Add notifications to unified service
       newStudentNotifications.forEach(notif => {
         unifiedDataService.addNotification(notif);
       });
 
       alert(
-        `${
-          newAssessments.length > 1
-            ? `${newAssessments.length} assessments`
-            : "Assessment"
+        `${newAssessments.length > 1
+          ? `${newAssessments.length} assessments`
+          : "Assessment"
         } created and assigned successfully! Students have been notified.`
       );
     } catch (error) {
@@ -1012,7 +1026,7 @@ const App: React.FC = () => {
       });
     });
     setAllNotifications((prev) => [...prev, ...newStudentNotifications]);
-    
+
     // Add notifications to unified service
     newStudentNotifications.forEach(notif => {
       unifiedDataService.addNotification(notif);
@@ -1102,7 +1116,7 @@ const App: React.FC = () => {
     }
 
     const classroom = classrooms.find((c) => c.classCode.toUpperCase() === joinClassCode.trim().toUpperCase());
-    
+
     if (!classroom) {
       const availableCodes = classrooms.map(c => c.classCode).join(", ");
       alert(`Invalid class code.\n\nAvailable codes: ${availableCodes || "No classrooms available"}`);
@@ -1124,7 +1138,7 @@ const App: React.FC = () => {
           : c
       )
     );
-    
+
     const updatedUser = {
       ...user,
       classIds: [...(user.classIds || []), classroom.id],
@@ -1202,7 +1216,7 @@ const App: React.FC = () => {
             classroom={selectedClass}
             assessments={assessments}
             resources={resources}
-            onStartAssessment={() => {}}
+            onStartAssessment={handleStartAssessmentFromDetail}
             onSelectAssessment={handleSelectAssessment}
             onBackToDashboard={() => handleNavigate("myClassrooms")}
           />
@@ -1230,7 +1244,7 @@ const App: React.FC = () => {
             questions={questions.filter(
               (q) => q.assessmentId === selectedAssessment.id
             )}
-            onStartAssessment={() => {}}
+            onStartAssessment={handleStartAssessmentFromDetail}
             onBackToDashboard={() =>
               handleNavigate("studentClassroom", {
                 classId: selectedAssessment.classId,
@@ -1245,7 +1259,7 @@ const App: React.FC = () => {
           "dyn-asmt-"
         )
           ? generatedQuestions ||
-            questions.filter((q) => q.assessmentId === completedAssessment.id)
+          questions.filter((q) => q.assessmentId === completedAssessment.id)
           : questions.filter((q) => q.assessmentId === completedAssessment.id);
         return (
           <ResultsView
@@ -1576,7 +1590,7 @@ const App: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 {(
                   academicSubjects[
-                    user.educationLevel as keyof typeof academicSubjects
+                  user.educationLevel as keyof typeof academicSubjects
                   ]?.[selectedSubjectForAssessment!] || []
                 ).map((topic: string) => (
                   <button
@@ -1658,7 +1672,7 @@ const App: React.FC = () => {
 
         <Modal
           isOpen={isGeneratingQuiz}
-          onClose={() => {}}
+          onClose={() => { }}
           title="Preparing Your Assessment"
         >
           <div className="text-center p-8">
