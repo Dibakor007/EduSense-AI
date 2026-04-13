@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// User Management
+// ============================================
+model User {
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  password             String
+  name                 String
+  role                 String   @default("student") // student | teacher | admin
+  avatar               String?
+  
+  // Student Stats
+  assessmentsCompleted Int      @default(0)
+  averageScore         Float    @default(0)
+  totalStudyTime       Int      @default(0) // minutes
+  xp                   Int      @default(0)
+  level                Int      @default(1)
+  streakDays           Int      @default(0)
+  educationLevel       String?
+  iqLevel              Int?
+
+  // Teacher-specific
+  institution          String?
+  subjects             String[] @default([])
+  experience           Int?     // years
+  bio                  String?
+
+  // Relations
+  taughtClassrooms     Classroom[]    @relation("TeacherClassrooms")
+  enrollments          Enrollment[]
+  submissions          Submission[]
+  notifications        Notification[]
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================
+// Classroom Management
+// ============================================
+model Classroom {
+  id          String   @id @default(uuid())
+  name        String
+  classCode   String   @unique
+  description String?
+  
+  teacherId   String
+  teacher     User     @relation("TeacherClassrooms", fields: [teacherId], references: [id], onDelete: Cascade)
+
+  enrollments Enrollment[]
+  assessments Assessment[]
+  resources   ClassroomResource[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([teacherId])
+  @@index([classCode])
+}
+
+model Enrollment {
+  id          String    @id @default(uuid())
+  userId      String
+  classroomId String
+  joinedAt    DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, classroomId])
+  @@index([userId])
+  @@index([classroomId])
+}
+
+model ClassroomResource {
+  id          String    @id @default(uuid())
+  classroomId String
+  fileName    String
+  fileType    String
+  fileUrl     String?
+  uploadedAt  DateTime  @default(now())
+
+  classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+
+  @@index([classroomId])
+}
+
+// ============================================
+// Assessments & Questions
+// ============================================
+model Assessment {
+  id             String   @id @default(uuid())
+  title          String
+  subject        String
+  topic          String?
+  description    String
+  duration       Int      // minutes
+  totalQuestions Int
+  difficulty     String   // easy | medium | hard
+  academicLevel  String?
+  startDate      DateTime @default(now())
+  isPublished    Boolean  @default(false)
+
+  classroomId    String?
+  classroom      Classroom? @relation(fields: [classroomId], references: [id], onDelete: SetNull)
+
+  questions      Question[]
+  submissions    Submission[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([classroomId])
+  @@index([subject])
+}
+
+model Question {
+  id             String   @id @default(uuid())
+  assessmentId   String
+  type           String   @default("multiple_choice") // multiple_choice | true_false | short_answer | code
+  difficulty     String   // easy | medium | hard
+  topic          String
+  question       String
+  options        String[] @default([])
+  correctAnswer  String
+  explanation    String
+  avgTimeToAnswer Int     @default(30) // seconds
+
+  assessment     Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId])
+}
+
+// ============================================
+// Submissions & Results
+// ============================================
+model Submission {
+  id             String   @id @default(uuid())
+  score          Float
+  percentage     Float
+  timeTaken      Int      // seconds
+  skillBreakdown Json     @default("{}")
+  questionResults Json    @default("[]")
+
+  studentId      String
+  student        User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  assessmentId   String
+  assessment     Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  feedback       TeacherFeedback?
+
+  submittedAt    DateTime @default(now())
+
+  @@index([studentId])
+  @@index([assessmentId])
+  @@index([studentId, assessmentId])
+}
+
+model TeacherFeedback {
+  id            String     @id @default(uuid())
+  submissionId  String     @unique
+  teacherId     String
+  comments      String
+  grade         Float?
+
+  submission    Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+// ============================================
+// Notifications
+// ============================================
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  text      String
+  read      Boolean  @default(false)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, read])
+}
+
+// ============================================
+// Skill Progress Tracking
+// ============================================
+model SkillProgress {
+  id      String   @id @default(uuid())
+  userId  String
+  skill   String
+  mastery Int      // 0-100
+  date    DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, skill])
+}
